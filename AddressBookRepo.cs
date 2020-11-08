@@ -40,8 +40,12 @@ namespace AddressBookADO.NET
                 {
                     while (reader.Read())
                     {
+                        // If the contact already exists then add in same contact
+                        // Else new contact
                         contact = contactList.Find(con => con.FirstName == reader[0].ToString()
                                                     && con.LastName == reader[1].ToString());
+
+                        // Read into contact details
                         if (contact == null)
                         {
                             contact = new ContactDetails();
@@ -55,6 +59,8 @@ namespace AddressBookADO.NET
                             contact.zip.state = reader[7].ToString();
                             contact.bookNameContactType.Add(reader[8].ToString(), new List<string> { reader[9].ToString() });
                         }
+
+                        // If contact already exists then add only book name and type
                         else
                         {
                             if (contact.bookNameContactType.ContainsKey(reader[9].ToString()))
@@ -65,6 +71,8 @@ namespace AddressBookADO.NET
                     contactList.Add(contact);
                     }
                 }
+
+                // Display all the contacts
                 contactList.ForEach(contact => contact.Display());
                 reader.Close();
         }
