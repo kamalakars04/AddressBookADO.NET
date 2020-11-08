@@ -18,6 +18,8 @@ namespace AddressBookADONET
         public string Email { get; set; }
 
         public string Address { get; set; }
+        public DateTime DateAdded { get; internal set; }
+
         public class Zip
         {
             public string zip { get; set; }
@@ -62,15 +64,16 @@ namespace AddressBookADONET
             Console.WriteLine("PhoneNumber : " + PhoneNumber);
             Console.WriteLine("Email : " + Email);
             Console.WriteLine("Address : " + Address);
+            Console.WriteLine("DateAdded : " + DateAdded);
             Console.WriteLine("Zip : " + zip.zip);
             Console.WriteLine("City : " + zip.city);
-            Console.WriteLine("State : " + zip.state);
-            Console.Write("AddressBook Names : ");
+            Console.Write("State : " + zip.state);
             foreach(KeyValuePair<string,List<string>> keyValuePair in bookNameContactType)
-                Console.Write(keyValuePair.Key);
-            Console.Write("\nContact type : ");
-            foreach (KeyValuePair<string, List<string>> keyValuePair in bookNameContactType)
-                keyValuePair.Value.ForEach(type => Console.Write(type));
+            {
+                Console.WriteLine("\nAddressBookName : " + keyValuePair.Key);
+                Console.Write("Contact type : ");
+                keyValuePair.Value.ForEach(type => Console.Write(type + "\t"));
+            }
         }
     }
 }
