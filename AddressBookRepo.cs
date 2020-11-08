@@ -241,5 +241,53 @@ namespace AddressBookADONET
                     connection.Close();
             }
         }
+
+        /// <summary>
+        /// UC 20 Adds the new contact.
+        /// </summary>
+        /// <param name="contact">The contact.</param>
+        public void AddNewContact(ContactDetails contact)
+        {
+            try
+            {
+                // Open connection
+                connection.Open();
+
+                // Declare a command
+                SqlCommand command = new SqlCommand();
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.CommandText = "dbo.AddNewContact";
+                command.Connection = connection;
+                foreach(KeyValuePair<string ,List<string>> bookNameType in contact.bookNameContactType)
+                {
+                    foreach(string type in bookNameType.Value)
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.AddWithValue("@firstName", contact.FirstName);
+                        command.Parameters.AddWithValue("@lastName", contact.LastName);
+                        command.Parameters.AddWithValue("@phoneNumber", contact.PhoneNumber);
+                        command.Parameters.AddWithValue("@Email", contact.Email);
+                        command.Parameters.AddWithValue("@address", contact.Address);
+                        command.Parameters.AddWithValue("@zip", contact.zip.zip);
+                        command.Parameters.AddWithValue("@city", contact.zip.city);
+                        command.Parameters.AddWithValue("@state", contact.zip.state);
+                        command.Parameters.AddWithValue("@addressBookName", bookNameType.Key);
+                        command.Parameters.AddWithValue("@contactType", type);
+                        var result = command.ExecuteNonQuery();
+                    }
+                }
+        }
+            catch
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+            }
+            finally
+            {
+
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+            }
+        }
     }
 }

@@ -67,5 +67,34 @@ namespace AddressBookADOMSTest
             // Assert
             CollectionAssert.AreEqual(actualContactList, expectedContactList);
         }
+
+        /// <summary>
+        /// TC 20 Add new contact and then check database
+        /// </summary>
+        [TestMethod]
+        public void AddNewContact()
+        {
+            // Arrange
+            AddressBookRepo addressBookRepo = new AddressBookRepo();
+            ContactDetails contact = new ContactDetails();
+            contact.FirstName = "Bhaskar";
+            contact.LastName = "chandra";
+            contact.PhoneNumber = "1212121212";
+            contact.Email = "abc@gmail.com";
+            contact.Address = "this nagar";
+            contact.zip.zip = "123456";
+            contact.zip.city = "Mumbai";
+            contact.zip.state = "Maharastra";
+            contact.bookNameContactType.Add("yesBook", new List<string> { "Friend", "Family" });
+            
+
+            // Act
+            addressBookRepo.AddNewContact(contact);
+            List<ContactDetails> actual =  addressBookRepo.GetContacts().FindAll(contact => contact.FirstName == "Bhaskar" && contact.LastName == "chandra");
+            List<ContactDetails> expected = new List<ContactDetails> { contact };
+            // Assert
+            CollectionAssert.AreEqual(actual, expected);
+        }
+
     }
 }

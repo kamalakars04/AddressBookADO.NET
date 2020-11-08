@@ -7,6 +7,7 @@
 namespace AddressBookADONET
 {
     using System;
+    using System.Collections.Generic;
 
     class Program
     {
@@ -25,6 +26,20 @@ namespace AddressBookADONET
 
             // UC 19 Get contacts by city or state
             addressBookRepo.GetContactsByCityOrState("pala", "kerala");
+
+            // UC 20 Add New Contact
+            ContactDetails contact = new ContactDetails();
+            contact.FirstName = "Bhaskar";
+            contact.LastName = "chandra";
+            contact.PhoneNumber = "1212121212";
+            contact.Email = "abc@gmail.com";
+            contact.Address = "this nagar";
+            contact.zip.zip = "123456";
+            contact.zip.city = "Mumbai";
+            contact.zip.state = "Maharastra";
+            contact.bookNameContactType.Add("yesBook", new List<string> { "Friend", "Family" });
+            addressBookRepo.AddNewContact(contact);
+            addressBookRepo.GetContacts();
         }
     }
 }
