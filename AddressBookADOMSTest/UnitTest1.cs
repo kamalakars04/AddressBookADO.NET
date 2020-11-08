@@ -49,5 +49,23 @@ namespace AddressBookADOMSTest
             // Assert
             CollectionAssert.AreEqual(actualContactList, expectedContactList);
         }
+
+        /// <summary>
+        /// TC 19 Get contacts by city or by state
+        /// </summary>
+        [TestMethod]
+        public void GetContactsByCityOrState()
+        {
+            // Arrange
+            AddressBookRepo addressBookRepo = new AddressBookRepo();
+
+            // Act
+            List<ContactDetails> actualContactList = addressBookRepo.GetContactsByCityOrState("pala","kerala");
+            List<ContactDetails> expectedContactList = addressBookRepo.GetContacts().FindAll(contact => contact.zip.city == "pala"
+                                                                                              && contact.zip.state == "kerala");
+
+            // Assert
+            CollectionAssert.AreEqual(actualContactList, expectedContactList);
+        }
     }
 }
