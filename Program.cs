@@ -22,6 +22,9 @@ namespace AddressBookADONET
 
             // UC 18 Get contacts added in a period
             addressBookRepo.GetContactsAddedInPeriod(new DateTime(2014, 05, 05), new DateTime(2021, 06, 06));
+
+            // UC 19 Get contacts by city or state
+            addressBookRepo.GetContactsByCityOrState("pala", "kerala");
         }
     }
 }

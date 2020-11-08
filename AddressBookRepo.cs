@@ -198,5 +198,48 @@ namespace AddressBookADONET
                     connection.Close();
             }
         }
+
+        /// <summary>
+        /// UC 19 Gets the state of the contacts by city or.
+        /// </summary>
+        /// <param name="city">The city.</param>
+        /// <param name="state">The state.</param>
+        /// <returns></returns>
+        public List<ContactDetails> GetContactsByCityOrState(string city, string state)
+        {
+            try
+            {
+                // Open connection
+                connection.Open();
+
+                // Declare a command and give all its properties
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "select * from GetContacts() where city = '" +
+                                        city + "' and state =  '" + state + "'";
+                command.Connection = connection;
+                SqlDataReader reader = command.ExecuteReader();
+                List<ContactDetails> contactList = new List<ContactDetails>();
+
+                // Read all the details
+                contactList = ReadContactDetails(reader);
+
+                // Display all the contacts
+                contactList.ForEach(contact => contact.Display());
+                reader.Close();
+                return contactList;
+            }
+            catch
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+                return null;
+            }
+            finally
+            {
+
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+            }
+        }
     }
 }
