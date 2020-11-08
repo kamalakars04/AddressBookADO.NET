@@ -4,7 +4,7 @@
 // </copyright>
 // <creator Name="Your name"/>
 // --------------------------------------------------------------------------------------------------------------------
-namespace AddressBookADO.NET
+namespace AddressBookADONET
 {
     using System;
     using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace AddressBookADO.NET
         /// <summary>
         /// UC 16 Gets all contacts.
         /// </summary>
-        public void GetContacts()
+        public List<ContactDetails> GetContacts(string firstName = null, string lastName = null)
         {
             try
             {
@@ -33,6 +33,12 @@ namespace AddressBookADO.NET
                 command.CommandText = "dbo.GetAllContacts";
                 command.Connection = connection;
 
+                // To get only one contact
+                if (firstName != null && lastName != null)
+                {
+                    command.Parameters.AddWithValue("@firstName", firstName);
+                    command.Parameters.AddWithValue("@lastName", lastName);
+                }
                 SqlDataReader reader = command.ExecuteReader();
                 List<ContactDetails> contactList = new List<ContactDetails>();
                 ContactDetails contact;
@@ -68,14 +74,50 @@ namespace AddressBookADO.NET
                             else
                                 contact.bookNameContactType.Add(reader[8].ToString(), new List<string> { reader[9].ToString() });
                         }
-                    contactList.Add(contact);
+                        contactList.Add(contact);
                     }
                 }
 
                 // Display all the contacts
                 contactList.ForEach(contact => contact.Display());
                 reader.Close();
+                return contactList;
+            }
+            catch
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+                return null;
+            }
+            finally
+            {
+
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+            }
         }
+
+        /// <summary>
+        /// UC 17 Updates the contact.
+        /// </summary>
+        /// <param name="firstName">The first name.</param>
+        /// <param name="lastName">The last name.</param>
+        /// <param name="column">The column.</param>
+        /// <param name="newValue">The new value.</param>
+        public void UpdateContact(string firstName, string lastName, string column, string newValue)
+        {
+            try
+            {
+                // Open connection
+                connection.Open();
+
+                // Declare a command and give all its properties
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "update contactdetails set " + column + " = '" + newValue + "' where firstname = '"
+                                        + firstName + "' and lastname = '" + lastName + "'";
+                command.Connection = connection;
+                command.ExecuteNonQuery();
+            }
             catch
             {
                 if (connection.State == System.Data.ConnectionState.Open)
@@ -83,7 +125,7 @@ namespace AddressBookADO.NET
             }
             finally
             {
-                
+
                 if (connection.State == System.Data.ConnectionState.Open)
                     connection.Close();
             }

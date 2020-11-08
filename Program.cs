@@ -4,7 +4,7 @@
 // </copyright>
 // <creator Name="Your name"/>
 // --------------------------------------------------------------------------------------------------------------------
-namespace AddressBookADO.NET
+namespace AddressBookADONET
 {
     using System;
 
@@ -15,6 +15,10 @@ namespace AddressBookADO.NET
             // UC 16 Get all contacts
             AddressBookRepo addressBookRepo = new AddressBookRepo();
             addressBookRepo.GetContacts();
+
+            // UC 17 Update Contact
+            addressBookRepo.UpdateContact("Ravi", "kumar", "phoneNumber", "8888888888");
+            addressBookRepo.GetContacts("Ravi", "kumar");
         }
     }
 }

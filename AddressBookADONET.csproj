@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AddressBookADOMSTest\**" />
+    <EmbeddedResource Remove="AddressBookADOMSTest\**" />
+    <None Remove="AddressBookADOMSTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
