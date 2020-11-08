@@ -4,7 +4,7 @@
 // </copyright>
 // <creator Name="Your name"/>
 // --------------------------------------------------------------------------------------------------------------------
-namespace AddressBookADO.NET
+namespace AddressBookADONET
 {
     using System;
     using System.Collections.Generic;
@@ -34,6 +34,13 @@ namespace AddressBookADO.NET
 
         public Dictionary<string, List<string>> bookNameContactType = new Dictionary<string, List<string>>();
 
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -44,6 +51,9 @@ namespace AddressBookADO.NET
             return this.FirstName == compareContact.FirstName && this.LastName == compareContact.LastName;
         }
 
+        /// <summary>
+        /// Displays this instance.
+        /// </summary>
         public void Display()
         {
             Console.WriteLine("\n\n\n\n");
@@ -61,7 +71,6 @@ namespace AddressBookADO.NET
             Console.Write("\nContact type : ");
             foreach (KeyValuePair<string, List<string>> keyValuePair in bookNameContactType)
                 keyValuePair.Value.ForEach(type => Console.Write(type));
-
         }
     }
 }
