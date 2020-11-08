@@ -19,6 +19,9 @@ namespace AddressBookADONET
             // UC 17 Update Contact
             addressBookRepo.UpdateContact("Ravi", "kumar", "phoneNumber", "8888888888");
             addressBookRepo.GetContacts("Ravi", "kumar");
+
+            // UC 18 Get contacts added in a period
+            addressBookRepo.GetContactsAddedInPeriod(new DateTime(2014, 05, 05), new DateTime(2021, 06, 06));
         }
     }
 }

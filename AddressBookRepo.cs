@@ -41,6 +41,34 @@ namespace AddressBookADONET
                 }
                 SqlDataReader reader = command.ExecuteReader();
                 List<ContactDetails> contactList = new List<ContactDetails>();
+
+                // Read all the details
+                contactList = ReadContactDetails(reader);
+
+                // Display all the contacts
+                contactList.ForEach(contact => contact.Display());
+                reader.Close();
+                return contactList;
+            }
+            catch
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+                return null;
+            }
+            finally
+            {
+
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+            }
+        }
+
+        public List<ContactDetails> ReadContactDetails(SqlDataReader reader)
+        {
+            try
+            {
+                List<ContactDetails> contactList = new List<ContactDetails>();
                 ContactDetails contact;
                 if (reader.HasRows)
                 {
@@ -61,26 +89,23 @@ namespace AddressBookADONET
                             contact.Email = reader[3].ToString();
                             contact.Address = reader[4].ToString();
                             contact.zip.zip = reader[5].ToString();
-                            contact.zip.city = reader[6].ToString();
-                            contact.zip.state = reader[7].ToString();
-                            contact.bookNameContactType.Add(reader[8].ToString(), new List<string> { reader[9].ToString() });
+                            contact.DateAdded = Convert.ToDateTime(reader[6]);
+                            contact.zip.city = reader[7].ToString();
+                            contact.zip.state = reader[8].ToString();
+                            contact.bookNameContactType.Add(reader[9].ToString(), new List<string> { reader[10].ToString() });
+                            contactList.Add(contact);
                         }
 
                         // If contact already exists then add only book name and type
                         else
                         {
                             if (contact.bookNameContactType.ContainsKey(reader[9].ToString()))
-                                contact.bookNameContactType[reader[8].ToString()].Add(reader[9].ToString());
+                                contact.bookNameContactType[reader[9].ToString()].Add(reader[10].ToString());
                             else
-                                contact.bookNameContactType.Add(reader[8].ToString(), new List<string> { reader[9].ToString() });
+                                contact.bookNameContactType.Add(reader[9].ToString(), new List<string> { reader[10].ToString() });
                         }
-                        contactList.Add(contact);
                     }
                 }
-
-                // Display all the contacts
-                contactList.ForEach(contact => contact.Display());
-                reader.Close();
                 return contactList;
             }
             catch
@@ -122,6 +147,49 @@ namespace AddressBookADONET
             {
                 if (connection.State == System.Data.ConnectionState.Open)
                     connection.Close();
+            }
+            finally
+            {
+
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// UC 18 Gets the contacts added in period.
+        /// </summary>
+        /// <param name="startdate">The startdate.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <returns></returns>
+        public List<ContactDetails> GetContactsAddedInPeriod(DateTime startdate, DateTime endDate)
+        {
+            try
+            {
+                // Open connection
+                connection.Open();
+
+                // Declare a command and give all its properties
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "select * from GetContacts() where DateAdded between '"+
+                                        startdate.ToString() + "' and '"+ endDate.ToString() + "'";
+                command.Connection = connection;
+                SqlDataReader reader = command.ExecuteReader();
+                List<ContactDetails> contactList = new List<ContactDetails>();
+
+                // Read all the details
+                contactList = ReadContactDetails(reader);
+
+                // Display all the contacts
+                contactList.ForEach(contact => contact.Display());
+                reader.Close();
+                return contactList;
+            }
+            catch
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                    connection.Close();
+                return null;
             }
             finally
             {
