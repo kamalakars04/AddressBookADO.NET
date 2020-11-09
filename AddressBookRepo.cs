@@ -9,7 +9,9 @@ namespace AddressBookADONET
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Diagnostics;
     using System.Text;
+    using System.Threading.Tasks;
 
     public class AddressBookRepo
     {
@@ -250,6 +252,8 @@ namespace AddressBookADONET
         {
             try
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 // Open connection
                 connection.Open();
 
@@ -276,7 +280,9 @@ namespace AddressBookADONET
                         var result = command.ExecuteNonQuery();
                     }
                 }
-        }
+                stopwatch.Stop();
+                Console.WriteLine("Time taken for adding one contact is {0}",stopwatch.ElapsedMilliseconds);
+            }
             catch
             {
                 if (connection.State == System.Data.ConnectionState.Open)
@@ -288,6 +294,19 @@ namespace AddressBookADONET
                 if (connection.State == System.Data.ConnectionState.Open)
                     connection.Close();
             }
+        }
+
+        /// <summary>
+        /// UC 21 InsertMultipleContactsWithThreads
+        /// </summary>
+        /// <param name="contactList"></param>
+        public void InsertMultipleContactsWithThreads(List<ContactDetails> contactList)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Parallel.ForEach(contactList, contact => AddNewContact(contact));
+            stopwatch.Stop();
+            Console.WriteLine("Time taken for adding multiple contacts is : {0}",stopwatch.ElapsedMilliseconds);
         }
     }
 }
