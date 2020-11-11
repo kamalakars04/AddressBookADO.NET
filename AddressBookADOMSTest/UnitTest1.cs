@@ -101,7 +101,7 @@ namespace AddressBookADOMSTest
         /// TC 21 Adds the multiple new contact.
         /// </summary>
         [TestMethod]
-        public void AddMultipleNewContact()
+        public void AddMultipleNewContactWithThreads()
         {
             // Arrange
             AddressBookRepo addressBookRepo = new AddressBookRepo();
@@ -130,7 +130,7 @@ namespace AddressBookADOMSTest
             contact1.bookNameContactType.Add("BroBook", new List<string> { "Friend", "Family" });
             
             // Add contact to list
-            contacts.Add(contact);
+            contacts.Add(contact1);
 
             // Act
             addressBookRepo.InsertMultipleContactsWithThreads(contacts);

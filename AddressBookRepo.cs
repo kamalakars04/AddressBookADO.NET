@@ -136,7 +136,8 @@ namespace AddressBookADONET
             try
             {
                 // Open connection
-                connection.Open();
+                SqlConnection connect = new SqlConnection(connectionString);
+                connect.Open();
 
                 // Declare a command and give all its properties
                 SqlCommand command = new SqlCommand();
@@ -250,18 +251,19 @@ namespace AddressBookADONET
         /// <param name="contact">The contact.</param>
         public void AddNewContact(ContactDetails contact)
         {
+            SqlConnection connect = new SqlConnection(connectionString);
             try
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 // Open connection
-                connection.Open();
+                connect.Open();
 
                 // Declare a command
                 SqlCommand command = new SqlCommand();
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.CommandText = "dbo.AddNewContact";
-                command.Connection = connection;
+                command.Connection = connect;
                 foreach(KeyValuePair<string ,List<string>> bookNameType in contact.bookNameContactType)
                 {
                     foreach(string type in bookNameType.Value)
@@ -285,14 +287,14 @@ namespace AddressBookADONET
             }
             catch
             {
-                if (connection.State == System.Data.ConnectionState.Open)
-                    connection.Close();
+                if (connect.State == System.Data.ConnectionState.Open)
+                    connect.Close();
             }
             finally
             {
 
-                if (connection.State == System.Data.ConnectionState.Open)
-                    connection.Close();
+                if (connect.State == System.Data.ConnectionState.Open)
+                    connect.Close();
             }
         }
 
